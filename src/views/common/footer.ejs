@@ -1,0 +1,5 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script><script src="/js/utils.js" defer></script><% if (locals.page == "notifications") {%><script src="/js/notify.js" defer></script><%}%><% if (locals.page == "explore") {%><script src="/js/explore.js" defer></script><%}%><% if (locals.page == "profile") {%><script src="/js/profile.js" defer></script><%}%><% if (locals.page == "wallet") {%><script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js" defer></script><script src="/js/wallet.js" defer></script><%}%><% if (locals.page=="share") {%><script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.3/tinymce.min.js" integrity="sha512-ykwx/3dGct2v2AKqqaDCHLt1QFVzdcpad7P5LfgpqY8PJCRqAqOeD4Bj63TKnSQy4Yok/6QiCHiSV/kPdxB7AQ==" crossorigin="anonymous"></script><script src="/js/share.js" defer></script><%}%>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socket.utils.js"></script>
+</body></html>

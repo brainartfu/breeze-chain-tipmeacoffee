@@ -1,0 +1,68 @@
+<%- include('./common/header2') %>
+<div id="root">
+    <div class="body-wrap" style="">
+        <main class="main">
+            <div class="middle-section ms-width">
+                <div class="Home-wrapper">
+                    <%- include('./common/topnav2') %>
+                    <div class="">
+                        <div class="post-header-wrapper back_sec"><div class="back_btn"><span class="middle-header-content">#<%= calledTag %></span></div></div>
+                        <%  articles.forEach(function(article) { 
+                            var tags = article.json.tags; var metatags = tags.map(s => '<a href="/tags/'+s+'">#'+s+'</a>').join(' ');var catg = article.json.category; var category = catg.charAt(0).toUpperCase() + catg.slice(1);var upvotes=JSON.stringify(article.votes); if(article.likes>0){postIncome=((article.dist)/1000000).toString()}else{postIncome=0}%>
+                        <div>
+                            <div class="inner-card-wrapper post_rw" style="align-items: center;">
+                                <div class="card-userPic-wrapper">
+                                    <a href="/profile/<%- article.author %>"><%if(article.user){%><div><img alt="<%- article.author %>" width="100%" height="49px" src="<%- article.user.profile.avatar%>" class="home_pro_pic" loading="lazy"></div><%}else{%><div><img alt="<%- article.author %>" width="100%" height="49px" src="/images/user.png" class="home_pro_pic" loading="lazy"></div><%}%></a>
+                                </div>
+                                <div class="card-content-wrapper">
+                                    <%if(article.json && article.json.type){
+                                      var hashregex = /(^|\B)#(?![0-9_]+\b)([a-zA-Z0-9_]{1,30})(\b|\r)/g;
+                                      var content=article.json.body;
+                                      var ptags = content.match(hashregex);
+
+                                      if(ptags){for(var i = 0, l = ptags.length; i < l; i++ ){content=content.replace(ptags[i], '<a style="color:rgb(0 43 255)" href="/tags/'+ptags[i].replace(/#/g, '').toLowerCase()+'">'+ptags[i]+'</a>');};};
+                                      if(article.json.type==3){%>
+                                      
+                                        <div class="post-content" data-permlink="<%- article.link %>" data-author="<%- article.author %>" onclick="window.location.href='/post/<%- article.author %>/<%- article.link %>'">
+                                        <p><%- content %></p>
+                                        </div>
+                                      
+                                      <%}else if(article.json.type==2){%>
+                                      <div class="post-content" data-permlink="<%- article.link %>" data-author="<%- article.author %>"><p><%- content %></p></div><div class="card-content-images"><a href="/post/<%- article.author %>/<%- article.link %>"><div class="card-image-link"><img alt="<%- article.link %>" src="<%- article.json.image %>" style="" /></div></a></div>
+                                      <%}else if(article.json.type==1){%>
+                                      <div>
+                                        <span class="card-content-info card_home_title">
+                                          <a href="/post/<%- article.author %>/<%- article.link %>"><%- article.json.title %></a>
+                                        </span>
+                                        <span class="card-content-info card_home_tags"><%- metatags.toString() %></span>
+                                      </div>
+                                      <div>
+                                        <span class="card-content-images"><a href="/post/<%- article.author %>/<%- article.link %>">
+                                        <span class="card-image-link"><iframe width="170px" height="100px" style="border: none;border-radius: 14px;min-height: 100px;" src="https://youtube.com/embed/<%-article.json.videoid%>?mute=1"></iframe></span></a></span>
+                                      </div>
+                                      <%}else if(article.json.type==0){ if(!article.json.image || article.json.image === undefined){var iimg='/images/img-tmac.png';}else{var iimg=article.json.image;};%>
+                                      <span>
+                                        <div class="card-content-info card_home_title"><a href="/post/<%- article.author %>/<%- article.link %>"><%- article.json.title %></a></div>
+                                        <div class="card-content-info bdy"><%- article.json.body %></div>
+                                        <div class="card-content-info card_home_tags"><%- metatags.toString() %></div>
+                                      </span>
+                                      <span>
+                                        <div class="card-content-images"><a href="/post/<%- article.author %>/<%- article.link %>"><div class="card-image-link" ><img alt="<%- article.link %>" src="<%- iimg %>" style="" /></div></a></div>
+                                      </span>
+                                      <%}%>
+                                    <%}else{%><div class="card-content-info card_home_title"><a href="/post/<%- article.author %>/<%- article.link %>"><%- article.json.title %></a></div>
+                                    <div class="card-content-info card_home_tags"><%- metatags.toString() %></div>
+                                    <div class="card-content-images"><a href="/post/<%- article.author %>/<%- article.link %>"><div class="card-image-link"><img alt="<%- article.link %>" src="<%- article.json.image %>" /></div></a></div>
+                                    <%}%>
+
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<%- include('./common/footer') %>

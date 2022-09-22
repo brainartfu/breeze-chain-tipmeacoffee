@@ -1,0 +1,27 @@
+<div class="tmac_header">
+	<div class="Home-header-wrapper">
+	    <div>
+	    	<% if(loguser){ %><span>
+	        <a class="Nav-link" href="/profile/<%-loguser%>" aria-label="profile">
+	          <img src="https://img.icons8.com/external-tanah-basah-glyph-tanah-basah/28/ffffff/external-user-user-tanah-basah-glyph-tanah-basah-4.png"/>
+	        </a>
+	    	</span><% } else {%>
+	    	<span class="logo_img" onclick="window.location.href='/'"></span><% } %>
+	    </div>
+	    <div>
+	    	<h2 class="Home-header" onclick="window.location.href='/'">TipMeACoffee<sup class="bt_logo">beta</sup></h2>
+	    </div>
+	    <div class="dnav">
+			<%- include('./nav') %>
+	    </div>
+	</div>
+	<% if ((locals.page) == "tmac"){ %>
+	<div class="pin-it">
+  		<%- include('./pin') %>
+	</div>
+	<div class="tg-outer-wrapper">
+	    <%- include('./tags_nav') %>
+	</div>
+	<%}%>
+	<div class="Top-input-divider" style="background: #181a20"></div>
+</div>

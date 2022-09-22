@@ -1,0 +1,100 @@
+<div class="Home-header-wrapper2 three-in-grid">
+	<div id="sendmessage">
+		<img src="https://img.icons8.com/ios-glyphs/30/null/chat.png" style="padding-right:10px ;" />
+	</div>
+	<div class="input-box">
+		<input type="text" class="form-control" id="url_field" required="true" autocomplete="off"placeholder="Minimum 60 characters with 2 hash tags [No personal messaging]">
+	</div>
+	<div>
+		<span style="padding-right:15px;padding-left:10px;">
+			<img src="https://img.icons8.com/ios/24/null/happy--v1.png"  class="emoji-button"/>
+		</span>
+		<span>
+			<img src="https://img.icons8.com/external-anggara-glyph-anggara-putra/24/null/external-send-email-interface-anggara-glyph-anggara-putra.png" class="add_post2" />
+      <img src="/images/loading.gif" class="load-pub" style="display:none;width: 24px;" />
+		</span>
+	</div>
+</div>
+<button class="close-crate hide-toggle" onclick="closeCrate()">X</button>
+<script src="https://unpkg.com/picmo@latest/dist/umd/index.js"></script>
+<script src="https://unpkg.com/@picmo/renderer-twemoji@latest/dist/umd/index.js"></script>
+<script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/index.js"></script>
+<style>
+	.search-users {
+		color: red;
+		background-color: #ffffff;
+		overflow-y: auto;
+	    max-height: 100px !important;
+	    display: none; 
+	    position: fixed; 
+	    bottom: 60px; 
+	    left: 250px; 
+	    z-index: 999; 
+	    width: 200px;
+        border-radius: 5px;
+	    border: 1px solid grey;
+	}
+	.search-users li {
+		border-top: 1px solid grey;
+		padding: 2px;
+		padding-left: 10px;
+	}
+	.search-users li:hover {
+		background-color: grey;
+	}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer>
+	// const crate = new Crate({
+	// 	server: '922801522625101845',
+	// 	channel: '922801522625101851',
+	// 	location: [-55, crateLocation],
+	// 	css: 'button { display: none!important; }'
+	// });
+</script>
+
+<script>
+	let crateLocation = (window.innerWidth - 980) / 2 - 7;
+	if (window.innerWidth <= 980) {crateLocation = 0;};
+	function toggleCrate() {
+		// crate.toggle();
+	  document.querySelector('.close-crate').classList.add('show-toggle');
+    document.querySelector('.close-crate').classList.remove('hide-toggle');
+  }
+
+
+  function closeCrate() {
+		crate.toggle(false);
+    document.querySelector('.close-crate').classList.remove('show-toggle');
+    document.querySelector('.close-crate').classList.add('hide-toggle');
+	}
+	window.addEventListener('resize', () => {
+		// crateLocation = ((window.innerWidth - document.querySelector('.Home-header-wrapper2.three-in-grid').offsetWidth) / 2) - 7;
+		// crate.setOptions({
+		// 	location: [-55, crateLocation]
+		// });
+	});
+	const { createPicker } = window.picmo;
+	const { createPopup } = window.picmoPopup;
+	const { TwemojiRenderer } = window.picmoTwemoji;
+	document.addEventListener('DOMContentLoaded', () => {
+		const trigger = document.querySelector('.emoji-button');
+		const picker = createPopup({
+			renderer: new TwemojiRenderer()
+		}, {
+			referenceElement: trigger,
+			triggerElement: trigger,
+			showCloseButton: false,
+			animate: false,
+			showSearch: false,
+		    autoFocusSearch: false,
+		    autoFocus: false,
+			showSearch: false
+		});
+		trigger.addEventListener('click', () => {
+			picker.toggle();
+		});
+		picker.addEventListener('emoji:select', (selection) => {
+			document.querySelector('#url_field').value += selection.emoji;
+		});
+	});
+</script>

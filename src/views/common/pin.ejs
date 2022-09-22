@@ -1,0 +1,11 @@
+<div class="pin-icon">
+	<img src="https://img.icons8.com/ios-glyphs/24/111111/pin.png"/>
+</div>
+<div class="pin-it-msg">
+	<span><% if(rain.data.rain && rain.data.rain == 'false'){%>Next Rain coming soon, Keep #storytelling to earn TMAC tokens<%}else{ %></span> 
+	
+	<span>Current Tips (Rain) of <%- rain.data.data.rain.amount %> TMAC Tokens will end in</span>
+    <span>
+        <img src="https://img.icons8.com/cotton/24/null/retro-alarm-clock.png" class="pin-icon" />
+    </span><%- moment.utc(rain.data.data.rain.end_date).fromNow()%> <%}%>
+</div>
