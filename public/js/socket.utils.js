@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const socket = io("http://localhost:5000");
     let onlineUsers = [];
     let usershow = false;
-    let searchkey = ''
+    let searchkey = '';
+    let directmessage = [];
     // client-side
     socket.on("connect", () => {
       console.log('your socket id: ', socket.id); // x8WIv7-mJelg7on_ALbx
@@ -49,6 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on("disconnect", () => {
       console.log('you are disconnected.', socket.id); // undefined
     });
+    const offsetLeft = document.getElementsByClassName('main')[0].offsetLeft;
+    document.getElementById('mention-count-badge').style.left = document.getElementsByClassName('main')[0].offsetWidth - 50 + 'px';
+    window.addEventListener("resize", () => {
+      offsetLeft = document.getElementsByClassName('main')[0].offsetLeft;
+    });
+
     if (document.getElementById('url_field')) {
       let userHtml = `<ul id="user-list" class='search-users'><li>no user</li></ul>`;
       document.getElementsByClassName('main')[0].insertAdjacentHTML("afterbegin", userHtml);
@@ -56,9 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === '@') {
           const ind = document.getElementById('url_field').value.indexOf('@');
           document.getElementById('user-list').style.display = 'block';
-          const left = document.getElementById('url_field').offsetLeft
-          console.log(left, ind, left + ind * 3)
-          document.getElementById('user-list').style.left = 200 + ind * 3;
+          console.log(offsetLeft, ind, this.selectionStart, offsetLeft + ind * 3)
+          document.getElementById('user-list').style.left = offsetLeft + ind * 6 + 'px';
           usershow = true;
         }
         if (usershow && e.key === ' ') {
@@ -76,12 +82,16 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('sendmessage').addEventListener('click', newMessage)
     }
   
-
     socket.on("newMessage", (data) => {
+      console.log(data)
       let html = '';
       if (data.type === 'direct') {
+        directmessage.push(data);
+        document.getElementById('mention-badge').innerHTML = directmessage.length;
+        document.getElementById('mention-badge').style.display = 'block';
+        document.getElementById('mention-link').href = '#direct-message-'+directmessage.length;
         toastr['success']("You receive the direct message from "+data.user.name);
-        html = `<div class="inner-card-wrapper post_rw" style="align-items: center; background-color: #ceed92">`
+        html = `<div class="inner-card-wrapper post_rw" style="align-items: center; background-color: #ceed92" id='direct-message-`+directmessage.length+`'>`
       }  else {
         html = `<div class="inner-card-wrapper post_rw" style="align-items: center; background-color: #f5f5dc">`
       }
