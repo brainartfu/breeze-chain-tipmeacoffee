@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let usershow = false;
     let searchkey = '';
     let directmessage = [];
+    let mymention = '';
     // client-side
     socket.on("connect", () => {
       console.log('your socket id: ', socket.id); // x8WIv7-mJelg7on_ALbx
@@ -38,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('users', (data) => {
       onlineUsers = [];
       let userHtml = '';
+      mymention = '@' + data.you;
       for (var i = 0; i < data.users.length; i++) {
         userHtml += `<li class="user-list-li" data="${data.users[i]}">${data.users[i]}</li>`;
         onlineUsers.push(data.users[i]);
@@ -93,7 +95,18 @@ document.addEventListener('DOMContentLoaded', () => {
         toastr['success']("You receive the direct message from "+data.user.name);
         html = `<div class="inner-card-wrapper post_rw" style="align-items: center; background-color: #ceed92" id='direct-message-`+directmessage.length+`'>`
       }  else {
-        html = `<div class="inner-card-wrapper post_rw" style="align-items: center; background-color: #f5f5dc">`
+        let ismatch = data.data.data.indexOf(mymention);
+        if (mymention && ismatch) {
+          directmessage.push(data);
+          document.getElementById('mention-badge').innerHTML = directmessage.length;
+          document.getElementById('mention-badge').style.display = 'block';
+          document.getElementById('mention-link').href = '#direct-message-'+directmessage.length;
+          toastr['success']("You receive the direct message from "+data.user.name);
+          html = `<div class="inner-card-wrapper post_rw" style="align-items: center; background-color: #ceed92" id='direct-message-`+directmessage.length+`'>`
+        } else {
+          html = `<div class="inner-card-wrapper post_rw" style="align-items: center; background-color: #f5f5dc">`
+        }
+
       }
           html += `<div class="card-userPic-wrapper">
             <a href="/profile/${data.user.name}"><img alt="${data.user.name}" width="100%" height="29px" src="${data.user.avatar}" class="home_pro_pic"> </a>

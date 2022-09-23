@@ -24,7 +24,7 @@ socketServer.init = (server) => {
 			    socket.cookies = cookies;
 			    onlineUsers[socket.cookies.breeze_username] = socket.id;
 		    	socketServer.io.emit('broadcast', {type: 'new', user: socket.cookies.breeze_username});
-		    	socket.emit('users', {type: 'userlist', users: postUsers})
+		    	socket.emit('users', {type: 'userlist', users: postUsers, you: socket.cookies.breeze_username})
 		    }
 		}
 		socket.on('message', async (data) => {
@@ -32,7 +32,7 @@ socketServer.init = (server) => {
 		  	{
 		  		loguser = socket.cookies.breeze_username; 
 		  		const actAPI = await getAccount(loguser);
-		  		if (data.data.match(/@[^\s]+/g) !== null) {
+		  		if (data.data.match(/@[^\s]+/g) !== null && false) {  //if true, only mentioned user can see the message.
 		  			// let senduser = data.data.match(/@[^\s]+/g)[0];
 		  			let matchs = data.data.match(/@[^\s]+/g);
 		  			matchs = [...new Set(matchs)];
