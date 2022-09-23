@@ -33,12 +33,17 @@
 	
 	.mention-count {
 		position: fixed;
-		bottom: 50px;
+		bottom: 70px;
 		right: 200px;
 		z-index: 9999;
 	}
 	.mention-count #mention-link{
 		width: 45px;
+	}
+	.mention-count #mention-badge{
+		width: 20px;
+		height: 18px;
+		top: -10px;
 	}
 	.mention-count svg {
 		fill: #333333 !important;
@@ -48,17 +53,18 @@
 		background-color: white;
 	}
 	.search-users {
-		color: red;
-		background-color: #ffffff;
+		background-color: #f8f8f8;
 		overflow-y: auto;
-	    max-height: 100px !important;
+	    max-height: 200px !important;
 	    display: none; 
 	    position: fixed; 
+        color: rgba(var(--sk_primary_foreground,29,28,29),1);
 	    bottom: 60px; 
 	    z-index: 999; 
 	    width: 200px;
         border-radius: 5px;
-	    border: 1px solid grey;
+	    border-bottom: 1px solid grey;
+	    padding: 3px 0;
 	}
 	.search-users li {
 		border-top: 1px solid grey;
@@ -66,7 +72,9 @@
 		padding-left: 10px;
 	}
 	.search-users li:hover {
-		background-color: grey;
+		background-color: #1264a3;
+		color: #ffffff;
+		border-top: none;
 	}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer>

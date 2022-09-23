@@ -27,7 +27,6 @@ socketServer.init = (server) => {
 		    	socket.emit('users', {type: 'userlist', users: postUsers})
 		    }
 		}
-		console.log(socketServer.io.sockets.sockets.get(socket.id))
 		socket.on('message', async (data) => {
 			if(socket.cookies && socket.cookies.breeze_username && socket.cookies.breeze_username !=='' && socket.cookies.token && socket.cookies.token !==''  && await global.validateToken(socket.cookies.breeze_username, socket.cookies.token)) 
 		  	{
@@ -35,7 +34,9 @@ socketServer.init = (server) => {
 		  		const actAPI = await getAccount(loguser);
 		  		if (data.data.match(/@[^\s]+/g) !== null) {
 		  			// let senduser = data.data.match(/@[^\s]+/g)[0];
-		  			data.data.match(/@[^\s]+/g).map((senduser)=> {
+		  			let matchs = data.data.match(/@[^\s]+/g);
+		  			matchs = [...new Set(matchs)];
+		  			matchs.map((senduser)=> {
 			  			console.log(senduser);
 			  			senduser = senduser.slice(1, senduser.length);
 			  			console.log(senduser);
