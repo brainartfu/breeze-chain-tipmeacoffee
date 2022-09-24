@@ -38,11 +38,12 @@ socketServer.init = (server) => {
 		  			matchs = [...new Set(matchs)];
 		  			await Promise.all(
 			  			matchs.map(async (senduser)=> {
+			  				
 				  			senduser1 = senduser.slice(1, senduser.length);
 					  		const mentionuser = await getAccount(senduser1);
 					  		if (mentionuser) {
 					  			const regexp = new RegExp(senduser, 'g');
-					  			data.data = data.data.replace(regexp, `<a href="/profile/${senduser1}">${senduser}</a>`);
+					  			data.data = data.data.replace(regexp, `<a href="/profile/${senduser.slice(1, senduser.length)}">${senduser}</a>`);
 					  		}
 				  			// if (onlineUsers[senduser1]) {
 				  			// 	console.log(socketServer.io.sockets.sockets[onlineUsers[senduser1]])
