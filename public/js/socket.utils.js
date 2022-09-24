@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     offsetLeft = document.getElementsByClassName('main')[0].offsetLeft;
     document.getElementById('mention-count-badge').style.left = document.getElementsByClassName('main')[0].offsetWidth + document.getElementsByClassName('main')[0].offsetLeft - 100 + 'px';
-    document.getElementById('mention-count-badge').style.display = 'block';
+    // document.getElementById('mention-count-badge').style.display = 'block';
     window.addEventListener("resize", () => {
       offsetLeft = document.getElementsByClassName('main')[0].offsetLeft;
     });
@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (directmessage.length === 1) {
         scrollToItem('#direct-message-1');
         directmessage = [];
+        document.getElementById('mention-count-badge').style.display = 'none';
         document.getElementById('mention-badge').style.display = 'none';
         document.getElementById('mention-badge').innerHTML = 0;
       }
@@ -118,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         directmessage.push(data);
         document.getElementById('mention-badge').innerHTML = directmessage.length;
         document.getElementById('mention-badge').style.display = 'block';
+        document.getElementById('mention-count-badge').style.display = 'block';
         // document.getElementById('mention-link').href = '#direct-message-'+directmessage.length;
         toastr['success']("You receive the direct message from "+data.user.name);
         html = `<div class="inner-card-wrapper post_rw" style="align-items: center; background-color: #ceed92" id='direct-message-`+directmessage.length+`'>`
