@@ -32,24 +32,35 @@ socketServer.init = (server) => {
 		  	{
 		  		loguser = socket.cookies.breeze_username; 
 		  		const actAPI = await getAccount(loguser);
-		  		if (data.data.match(/@[^\s]+/g) !== null && false) {  //if true, only mentioned user can see the message.
+		  		if (data.data.match(/@[^\s]+/g) !== null) {  //if true, only mentioned user can see the message.
 		  			// let senduser = data.data.match(/@[^\s]+/g)[0];
 		  			let matchs = data.data.match(/@[^\s]+/g);
 		  			matchs = [...new Set(matchs)];
-		  			matchs.map((senduser)=> {
-			  			console.log(senduser);
-			  			senduser = senduser.slice(1, senduser.length);
-			  			console.log(senduser);
-			  			if (onlineUsers[senduser]) {
-			  				console.log(socketServer.io.sockets.sockets[onlineUsers[senduser]])
-			  				socketServer.io.sockets.sockets.get(onlineUsers[senduser]).emit('newMessage', {type: 'direct', data: data, user: {avatar: actAPI.json?actAPI.json.profile.avatar:'/images/user.png', name: actAPI.name}})
-			  				socket.emit('newMessage', {type: 'broadcast', data: data, user: {avatar: actAPI.json?actAPI.json.profile.avatar:'/images/user.png', name: actAPI.name}})
-			  			} else {
-				  			console.log('offline');
-			  				socket.emit('error', {data: 'Sorry. '+senduser+' is offline.'})
-			  			}
-		  			})
+		  			await Promise.all(
+			  			matchs.map(async (senduser)=> {
+				  			console.log(senduser);
+				  			senduser1 = senduser.slice(1, senduser.length);
+					  		const mentionuser = await getAccount(senduser1);
+					  		if (mentionuser) {
+					  			// console.log(data.data)
+					  			const regexp = new RegExp(senduser, 'g');
+					  			data.data = data.data.replace(regexp, `<a href="/profile/${senduser1}">${senduser}</a>`);
+					  			console.log(data.data, senduser)
+					  		}
+				  			console.log(senduser1);
+				  			// if (onlineUsers[senduser1]) {
+				  			// 	console.log(socketServer.io.sockets.sockets[onlineUsers[senduser1]])
+				  			// 	socketServer.io.sockets.sockets.get(onlineUsers[senduser1]).emit('newMessage', {type: 'direct', data: data, user: {avatar: actAPI.json?actAPI.json.profile.avatar:'/images/user.png', name: actAPI.name}})
+				  			// 	socket.emit('newMessage', {type: 'broadcast', data: data, user: {avatar: actAPI.json?actAPI.json.profile.avatar:'/images/user.png', name: actAPI.name}})
+				  			// } else {
+					  		// 	console.log('offline');
+				  			// 	socket.emit('error', {data: 'Sorry. '+senduser1+' is offline.'})
+				  			// }
+			  			})
+		  			) 
+					socketServer.io.emit('newMessage', {data: data, user: {type:'broadcast', avatar: actAPI.json?actAPI.json.profile.avatar:'/images/user.png', name: actAPI.name}})
 		  		} else {
+
 					socketServer.io.emit('newMessage', {data: data, user: {type:'broadcast', avatar: actAPI.json?actAPI.json.profile.avatar:'/images/user.png', name: actAPI.name}})
 		  		}
 		  	} else {
